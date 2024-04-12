@@ -4,32 +4,39 @@ import noop from "lodash/noop";
 type MenuIds = "first" | "second" | "last";
 type Menu = { id: MenuIds; title: string };
 
+// Описати тип SelectedMenu: Це має бути об'єкт, який містить id з типом MenuIds
 type SelectedMenu = {
   id: MenuIds;
 };
 
+// Описати тип MenuSelected: Цей тип є об'єктом, що містить selectedMenu
 type MenuSelected = {
   selectedMenu: SelectedMenu;
 };
 
+// Описати тип MenuAction: Цей тип являє собою об'єкт з методом onSelectedMenu, який приймає об'єкт типу SelectedMenu як аргумент повертає void.
 type MenuAction = {
   onSelectedMenu: (selectedMenu: SelectedMenu) => void;
 };
 
 const MenuSelectedContext = createContext<MenuSelected>({
-  selectedMenu: { id: "" },
+  selectedMenu: {} as SelectedMenu,
 });
 
 const MenuActionContext = createContext<MenuAction>({
   onSelectedMenu: noop,
 });
 
+// Описати тип PropsProvider: Опишіть правильний тип для дітей
 type PropsProvider = {
   children: React.ReactNode;
 };
 
 function MenuProvider({ children }: PropsProvider) {
- const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>({ id: "" });
+  // Додати тип для SelectedMenu він повинен містити { id }
+  const [selectedMenu, setSelectedMenu] = useState<SelectedMenu>(
+    {} as SelectedMenu
+  );
 
   const menuContextAction = useMemo(
     () => ({
@@ -54,6 +61,7 @@ function MenuProvider({ children }: PropsProvider) {
   );
 }
 
+// Описати тип PropsMenu: Опишіть тип для menus, він має бути від типу Menu
 type PropsMenu = {
   menus: Menu[];
 };
